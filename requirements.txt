@@ -1,1 +1,10 @@
-
+streamlit
+streamlit-folium
+folium
+pandas
+geopandas
+shapely
+hdbscan
+numpy
+matplotlib
+scikit-learn
