@@ -1,40 +1,46 @@
-# 🗺️ Coimbra Urban Accessibility & Network Analysis
-### Analisi delle Isocrone e Modellazione della Rete Stradale tramite OpenStreetMap
+# 📊 Analisi Integrata della Sicurezza e Mobilità Urbana - Coimbra
+### Data Science applicata all'incidentalità stradale e all'accessibilità
 
-Questo progetto si focalizza sullo studio della **mobilità urbana** nella città di Coimbra (Portogallo). Utilizzando grafi stradali reali e algoritmi di percorso minimo, l'applicazione definisce le aree di accessibilità (isocrone) basate sui tempi di percorrenza effettivi.
+Questo progetto accademico presenta un'analisi geospaziale avanzata della città di Coimbra (Portogallo), unendo lo studio statistico degli incidenti stradali con la modellazione dinamica della rete viaria.
 
-## 🚀 Panoramica del Progetto
-A differenza delle analisi basate sul raggio d'aria (distanza euclidea), questo studio utilizza la **teoria dei grafi** per modellare la città come una rete complessa. Il progetto permette di visualizzare fin dove è possibile arrivare partendo da un punto centrale (es. Praça da República) in 5, 10 o 15 minuti di guida.
+## 🚀 Obiettivi del Progetto
+L'obiettivo è fornire uno strumento analitico che identifichi i "punti neri" della città e valuti l'efficienza dei soccorsi e della mobilità attraverso la teoria dei grafi e algoritmi di Machine Learning.
 
-## 🛠️ Stack Tecnologico & Metodologia
-Il progetto implementa le seguenti librerie e concetti di **Geospatial Data Science**:
+## 📁 Struttura dell'Analisi (Capitoli)
 
-* **OSMnx:** Per il download e la modellazione del grafo stradale (`network_type='drive'`) direttamente da OpenStreetMap.
-* **NetworkX:** Per il calcolo del sottografo dei nodi raggiungibili (Ego Graph) tramite l'algoritmo di Dijkstra.
-* **Folium:** Per la visualizzazione cartografica interattiva.
-* **Geopandas & Shapely:** Per la manipolazione delle geometrie e la creazione del **Convex Hull** (l'area poligonale dell'isocrona).
+### 1. Pre-processing e Calcolo della Gravità
+I dati grezzi dell'incidentalità sono stati filtrati e arricchiti. È stato implementato un **Indice di Gravità Ponderato** per classificare il rischio reale di ogni incidente:
+- **Morti:** peso 10
+- **Feriti Gravi:** peso 5
+- **Feriti Lievi:** peso 3
 
+### 2. Clustering Spaziale (DBSCAN)
+Per identificare scientificamente gli **Hotspot** (zone ad alta densità di incidenti), è stato utilizzato l'algoritmo **DBSCAN** (*Density-Based Spatial Clustering of Applications with Noise*) o il suo "cugino" **HDBSCAN**
+- **Metodologia:** Utilizzo della distanza di *Haversine* per gestire coordinate sferiche.
+- **Risultato:** Identificazione dei cluster principali che rappresentano le aree di intervento prioritario, escludendo il rumore statistico (incidenti isolati).
 
+### 3. Modellazione della Rete Stradale (OSMnx)
+Utilizzando la libreria `OSMnx`, la città di Coimbra è stata trasformata in un **Grafo Orientato**.
+- **Topologia:** Il modello rispetta i sensi unici di marcia e i limiti di velocità.
+- **Edge Speeds:** Assegnazione delle velocità medie per trasformare la distanza fisica in tempi di percorrenza reali.
 
-## 📁 Struttura della Repository
-- `/data`: Cartella dedicata ai dataset degli incidenti e della mobilità.
-- `app.py`: Il codice dell'applicazione Streamlit che integra l'analisi dinamica.
-- `requirements.txt`: Elenco delle dipendenze necessarie per il deploy.
+### 4. Analisi delle Isocrone
+Generazione di poligoni di accessibilità basati sul tempo (5, 10, 15 minuti) partendo da nodi strategici.
+- **Algoritmo di Dijkstra:** Utilizzato per trovare il cammino minimo sul grafo.
+- **Geometria:** Utilizzo del *Convex Hull* per definire i confini delle aree raggiungibili entro la soglia temporale impostata.
 
-## 🧮 Logica di Calcolo
-Il modello non si limita alla distanza, ma analizza la **topologia stradale**:
-1.  **Sensi di Marcia:** Il grafo è orientato; se una strada è a senso unico, il calcolo ne tiene conto.
-2.  **Velocità e Tempi:** Viene calcolato l'attributo `travel_time` per ogni segmento stradale:
-    $$Tempo (s) = \frac{Lunghezza (m)}{Velocità (m/s)}$$
-3.  **Generazione Isocrone:** Vengono estratti i nodi raggiungibili entro una soglia temporale e uniti in un poligono convesso sfumato.
+### 5. Visualizzazione Interattiva (Folium)
+Integrazione di tutti i layer informativi su mappe interattive:
+- **HeatMap:** Per la densità visiva degli incidenti.
+- **Marker Clusters:** Per l'esplorazione granulare dei dati.
+- **Isochrone Layers:** Poligoni colorati sfumati per l'analisi dell'accessibilità.
 
+## 🛠️ Stack Tecnologico
+- **Python** (Pandas, Numpy)
+- **Scikit-Learn** (DBSCAN)
+- **Geospatial Tools** (OSMnx, NetworkX, Geopandas, Shapely)
+- **Visualization** (Folium, Matplotlib)
 
-
-## 🔧 Configurazione e Installazione
-Per eseguire il progetto localmente:
-1. Clonare la repository: `git clone https://github.com/TUO-USERNAME/NOME-REPO.git`
-2. Installare le dipendenze: `pip install -r requirements.txt`
-3. Eseguire l'app: `streamlit run app.py`
-
----
-*Progetto realizzato per l'esame di Marketing & Customer Analytics.*
+## 🔧 Installazione
+```bash
+pip install osmnx folium streamlit-folium scikit-learn geopandas
