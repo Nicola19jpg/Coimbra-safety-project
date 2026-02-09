@@ -4,7 +4,7 @@
 Questo progetto accademico presenta un'analisi geospaziale avanzata della città di Coimbra (Portogallo), unendo lo studio statistico degli incidenti stradali con la modellazione dinamica della rete viaria.
 
 ## 🚀 Obiettivi del Progetto
-L'obiettivo è fornire uno strumento analitico che identifichi i "punti neri" della città e valuti l'efficienza dei soccorsi e della mobilità attraverso la teoria dei grafi e algoritmi di Machine Learning.
+L'obiettivo è fornire uno strumento analitico che identifichi i "punti neri" della rete stradale e le aree di accumulazione di incidenti.
 
 ## 📁 Struttura dell'Analisi (Capitoli)
 
@@ -24,10 +24,6 @@ Utilizzando la libreria `OSMnx`, la città di Coimbra è stata trasformata in un
 - **Topologia:** Il modello rispetta i sensi unici di marcia e i limiti di velocità.
 - **Edge Speeds:** Assegnazione delle velocità medie per trasformare la distanza fisica in tempi di percorrenza reali.
 
-### 4. Analisi delle Isocrone
-Generazione di poligoni di accessibilità basati sul tempo (5, 10, 15 minuti) partendo da nodi strategici.
-- **Algoritmo di Dijkstra:** Utilizzato per trovare il cammino minimo sul grafo.
-- **Geometria:** Utilizzo del *Convex Hull* per definire i confini delle aree raggiungibili entro la soglia temporale impostata.
 
 ### 5. Visualizzazione Interattiva (Folium)
 Integrazione di tutti i layer informativi su mappe interattive:
