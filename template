@@ -11,10 +11,7 @@ import numpy as np
 import matplotlib.cm as cm
 import matplotlib.colors as colors
 
-# ==============================
-## 1. Data Loading and Preparation
-# ==============================
-
+## Data Loading and Preparation
 df = pd.read_csv(CSV_PATH, quotechar='"')
 
 geometry = [Point(xy) for xy in zip(df['Longitude GPS'], df['Latitude GPS'])]
@@ -22,8 +19,7 @@ gdf = gpd.GeoDataFrame(df, geometry=geometry, crs="EPSG:4326")
 gdf_meters = gdf.to_crs(epsg=3763)
 coords = np.array(list(zip(gdf_meters.geometry.x, gdf_meters.geometry.y)))
 
-## 3. DBSCAN Clustering
-
+## DBSCAN Clustering
 db = DBSCAN(eps=200, min_samples=5, metric='euclidean').fit(coords)
 gdf["Cluster"] = db.labels_.astype(str)
 
@@ -32,8 +28,7 @@ tabella_cluster = gdf[gdf["Cluster"] != "-1"].groupby("Cluster").agg(
     Gravidade_Cumulata=('Ind. Gravidade', 'sum')
 ).reset_index()
 
-## 4. Cluster Aggregation and Severity Filtering
-
+## Cluster Aggregation and Severity Filtering
 tabella_cluster = gdf[gdf["Cluster"] != "-1"].groupby("Cluster").agg(
     Conteggio_Incidenti=('Ind. Gravidade', 'count'),
     Gravidade_Cumulata=('Ind. Gravidade', 'sum')
@@ -43,11 +38,9 @@ hotspots_validi = tabella_cluster[tabella_cluster["Gravidade_Cumulata"] > 20].co
 hotspots_validi = hotspots_validi.sort_values(by="Gravidade_Cumulata", ascending=False)
 hotspots_validi.columns = ["ID Cluster", "Conteggio Incidenti", "Indice Gravidade Cumulato"]
 
-# Filtro dati per la mappa
 lista_id_validi = hotspots_validi["ID Cluster"].tolist()
 gdf_mappa = gdf[gdf["Cluster"].isin(lista_id_validi)].copy()
-
-# ---  VISUALIZZAZIONE ---
+ 
 print("=== PONTOS NEGROS {year} ===")
 
 if hotspots_validi.empty:
@@ -63,6 +56,7 @@ else:
     cmap = cm.get_cmap('tab20', len(unique_clusters))
     cluster_colors = {cluster: colors.rgb2hex(cmap(i)) for i, cluster in enumerate(unique_clusters)}
 
+    # Add Buffers
     cluster_centers = gdf_mappa.groupby("Cluster").agg({'Latitude GPS': 'mean', 'Longitude GPS': 'mean'}).reset_index()
     for _, center in cluster_centers.iterrows():
         folium.Circle(
@@ -72,6 +66,7 @@ else:
             fill=True, fill_opacity=0.1, weight=1, dash_array='5, 5'
         ).add_to(map_coimbra)
 
+    # Add Points
     for _, row in gdf_mappa.iterrows():
         folium.CircleMarker(
             location=[row["Latitude GPS"], row["Longitude GPS"]],
@@ -84,6 +79,5 @@ else:
             f"<b>Long</b>: {row['Longitude GPS']}"
         ).add_to(map_coimbra)
 
-## . Results Display
-
+##Results Display
     display(map_coimbra)
