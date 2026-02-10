@@ -48,7 +48,7 @@ if hotspots_validi.empty:
 else:
     display(hotspots_validi)
 
-    # Interactive Map Setup
+    ## Interactive Map Setup
     coimbra_coords = [gdf_mappa['Latitude GPS'].mean(), gdf_mappa['Longitude GPS'].mean()]
     map_coimbra = folium.Map(location=coimbra_coords, zoom_start=14, tiles="CartoDB Positron")
 
@@ -56,7 +56,7 @@ else:
     cmap = cm.get_cmap('tab20', len(unique_clusters))
     cluster_colors = {cluster: colors.rgb2hex(cmap(i)) for i, cluster in enumerate(unique_clusters)}
 
-    # Add Buffers
+    ## Add Buffers
     cluster_centers = gdf_mappa.groupby("Cluster").agg({'Latitude GPS': 'mean', 'Longitude GPS': 'mean'}).reset_index()
     for _, center in cluster_centers.iterrows():
         folium.Circle(
@@ -66,7 +66,7 @@ else:
             fill=True, fill_opacity=0.1, weight=1, dash_array='5, 5'
         ).add_to(map_coimbra)
 
-    # Add Points
+    ## Add Points
     for _, row in gdf_mappa.iterrows():
         folium.CircleMarker(
             location=[row["Latitude GPS"], row["Longitude GPS"]],
@@ -79,7 +79,7 @@ else:
             f"<b>Long</b>: {row['Longitude GPS']}"
         ).add_to(map_coimbra)
 
-##Results Display
+## Results Display
     display(map_coimbra)
 
 
