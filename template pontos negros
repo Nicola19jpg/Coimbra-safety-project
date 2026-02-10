@@ -1,11 +1,12 @@
 !pip install folium geopandas scikit-learn hdbscan --quiet
 
-# PONTOS NEGROS {year} - COIMBRA
+# PONTOS NEGROS {year} 
 
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point
 import folium
+from folium.plugins import Geocoder
 from sklearn.cluster import DBSCAN
 import numpy as np
 import matplotlib.cm as cm
@@ -51,6 +52,7 @@ else:
     ## Interactive Map Setup
     coimbra_coords = [gdf_mappa['Latitude GPS'].mean(), gdf_mappa['Longitude GPS'].mean()]
     map_coimbra = folium.Map(location=coimbra_coords, zoom_start=14, tiles="CartoDB Positron")
+    Geocoder(collapsed=False, position='topright', add_marker=True).add_to(map_coimbra)
 
     unique_clusters = sorted(gdf_mappa["Cluster"].unique())
     cmap = cm.get_cmap('tab20', len(unique_clusters))
