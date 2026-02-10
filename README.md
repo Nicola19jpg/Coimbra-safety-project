@@ -1,6 +1,6 @@
 # Road Safety project - Coimbra
 
-This project focuses on the analysis of urban accidents within the municipality of Coimbra. Specifically, for the period 2019–2024, the critical points of the city network and the accident accumulation areas were analyzed, year by year.
+This project focuses on the analysis of urban accidents within the municipality of Coimbra. In particular, for the period 2019–2024, the critical points of the city network and the accident accumulation areas were analyzed, year by year.
 
 ##  Objectives
 The objective of this project is to identify and visualize road safety critical areas in the city of Coimbra by analyzing traffic accident data from 2019 to 2024, by using python language code.
