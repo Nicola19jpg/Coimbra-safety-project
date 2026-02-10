@@ -1,93 +1,42 @@
-# Road Safety project -  Coimbra
+# Road Safety project - Coimbra
 
-Questo progetto riguarda l'analisi sulla incidentalitá urbana per il comune di Coimbra. In particolare, per il periodo 2019-2024 sono stati analizzati i punti critici della rete cittadina e le area di accumulazione di incidenti, anno per anno.
+This project focuses on the analysis of urban accidents within the municipality of Coimbra. Specifically, for the period 2019–2024, the critical points of the city network and the accident accumulation areas were analyzed, year by year.
 
-##  Obiettivi del Progetto
-L'obiettivo è fornire uno strumento analitico che identifichi i "punti neri" della rete stradale e le "aree di accumulazione di incidenti" aumentando rapidita di esecuziona ma senza perdere efficacia
-
-## 📁 Struttura dell'Analisi (Capitoli)
-
-### 1. Pre-processing e Calcolo della Gravità
-I dati grezzi dell'incidentalità sono stati filtrati e arricchiti. È stato implementato un **Indice di Gravità Ponderato** per classificare il rischio reale di ogni incidente:
-- **Morti:** peso 10
-- **Feriti Gravi:** peso 5
-- **Feriti Lievi:** peso 3
-
-### 2. Clustering Spaziale (DBSCAN)
-Per identificare scientificamente gli **Hotspot** (zone ad alta densità di incidenti), è stato utilizzato l'algoritmo **DBSCAN** (*Density-Based Spatial Clustering of Applications with Noise*) o il suo "cugino" **HDBSCAN**
-- **Metodologia:** Utilizzo della distanza di *Haversine* per gestire coordinate sferiche.
-- **Risultato:** Identificazione dei cluster principali che rappresentano le aree di intervento prioritario, escludendo il rumore statistico (incidenti isolati).
-
-
-## 🛠️ Stack Tecnologico
-- **Python** (Pandas, Numpy)
-- **Scikit-Learn** (DBSCAN)
-- **Geospatial Tools** (OSMnx, NetworkX, Geopandas, Shapely)
-- **Visualization** (Folium, Matplotlib)
-
-## 🔧 Installazione
-```bash
-!pip install folium geopandas scikit-learn hdbscan --quiet
-
-
-##  **Struttura del Repository**
-
-* `data/`: Cartella contenente i dataset di input e i dati elaborati.
-* `template accumulation areas`: Template per l'analisi delle aree di accumulo.
-* `template pontos negros`: Template per l'analisi dei punti neri .
-* `requirements.txt`: Elenco delle dipendenze Python necessarie.
-
-##  Requisiti e Installazione
-
-Assicurati di avere Python installato. Per installare tutte le librerie necessarie, esegui:
-
-```bash
-pip install -r requirements.txt
-
-# Road Safety Hotspots Detection – Coimbra (2019–2024)
-
-## Objective
-The objective of this project is to identify and visualize road safety critical areas in the city of Coimbra by analyzing traffic accident data from 2019 to 2024.  
+##  Objectives
+The objective of this project is to identify and visualize road safety critical areas in the city of Coimbra by analyzing traffic accident data from 2019 to 2024, by using python language code.
 The analysis focuses on detecting spatial concentrations of accidents and highlighting areas with higher cumulative severity.
-
----
-
-## Description
 
 ### What the code does
 This project identifies two types of spatial patterns:
 
 - **Pontos Negros (Black Spots)**  
-  Localized areas where traffic accidents are spatially concentrated and present a high cumulative severity index.
+  Localized areas (200m radius) where traffic accidents are spatially concentrated and present a high cumulative severity index (>20).
 
 - **Accumulation Areas**  
-  Larger zones where accidents are distributed over a wider area but still show significant spatial density and risk.
+  Larger zones (300m radius) where accidents are distributed over a wider area but still show significant spatial density (>=15).
 
 The code processes georeferenced accident data, applies clustering algorithms, filters clusters based on severity thresholds, and produces **interactive maps** to explore the results.
 
----
 
 ### Methodology
 - Accident coordinates (latitude and longitude) are converted into spatial objects.
 - Data are projected into a metric coordinate reference system to allow distance-based clustering.
 - Clustering algorithms are applied to group nearby accidents.
 - Clusters are filtered based on cumulative severity indicators.
-- Results are visualized through interactive Folium maps with popup info about accidents.
+- Results are visualized through interactive Folium maps with popup about accidents info.
 
 ---
 
-### Technologies and Algorithms
+### Clustering Methods
 
 #### DBSCAN
-DBSCAN is used to detect **Pontos Negros**.  
-It groups accidents that are closely located within a fixed distance (eps) and a minimum number of points.
-
+DBSCAN (Density-Based Spatial Clustering of Applications with Noise)  groups data that are closely located within a fixed distance (eps) and a minimum number of points.All the points that don't belong to any cluster are grouped in the Noise cluster (-1), meaning they are discarded from the cluster list
 - Strength: effective for identifying compact and well-defined clusters.
-- Limitation: sensitive to the *chaining effect*, where clusters may grow by linking points through intermediate distances.
+- Limitation: sensitive to the *chaining effect*, where clusters may grow by linking points through intermediate distances, event though they overcome the fixed distance.
 
 #### HDBSCAN
-HDBSCAN is used to detect **Accumulation Areas**.  
-It extends DBSCAN by allowing variable density clusters and automatically identifying noise.
+
+It extends DBSCAN by allowing variable density (excess of mass concept) within a cluster and automatically identifying as noise point the ones that aren't located in *excess of mass zone*.
 
 - Strength: better handling of heterogeneous spatial densities.
 - Limitation: cluster interpretation depends on parameter choices and may produce less intuitive boundaries.
@@ -97,14 +46,21 @@ It extends DBSCAN by allowing variable density clusters and automatically identi
 ### Challenges and Improvements
 - Managing the chaining effect in DBSCAN.
 - Interpreting HDBSCAN results and cluster reliability.
-- Ensuring spatial consistency across different years.
+- Comparing clustering results with HDBSCAN and DBSCAN methods.
 
 Possible future improvements include:
-- Sensitivity analysis of clustering parameters.
-- Integration of frequency distributio.
+
+- Integration of frequency distribution.
 - Comparison with additional spatial analysis techniques.
 
 ---
+
+##  **Repository Structure**
+
+* `data/`: Folder containing input datasets and processed data.
+* `template accumulation areas`: Template for accumulation area analysis.
+* `template pontos negros`: Template for black spot analysis.
+* `requirements.txt`: List of required Python dependencies.
 
 ## Installation
 
