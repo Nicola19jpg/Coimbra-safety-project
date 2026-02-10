@@ -30,7 +30,8 @@ The code processes georeferenced accident data, applies clustering algorithms, f
 ### Clustering Methods
 
 #### DBSCAN
-DBSCAN (Density-Based Spatial Clustering of Applications with Noise)  groups data that are closely located within a fixed distance (eps) and a minimum number of points. All the points that don't belong to any cluster are grouped in the Noise cluster (-1), meaning they are discarded from the cluster list
+DBSCAN (Density-Based Spatial Clustering of Applications with Noise)  groups data that are closely located within a fixed distance (eps) and a minimum number of points. All the points that don't belong to any cluster are grouped in the Noise cluster (-1), meaning they are discarded from the cluster list.
+
 - Strength: effective for identifying compact and well-defined clusters.
 - Limitation: sensitive to the *chaining effect*, where clusters may grow by linking points through intermediate distances, event though they overcome the fixed distance.
 
