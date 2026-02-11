@@ -19,7 +19,7 @@ The code processes georeferenced accident data, applies clustering algorithms, f
 
 
 ### Methodology
-- Accident coordinates (latitude and longitude) are converted into spatial objects.
+- Accident coordinates (latitude and longitude) are converted into spatial objects. Be aware 
 - Data are projected into a metric coordinate reference system to allow distance-based clustering.
 - Clustering algorithms are applied to group nearby accidents.
 - Clusters are filtered based on cumulative severity indicators.
